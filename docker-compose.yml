@@ -1,7 +1,12 @@
 version: "3.9"
 services:
   shinyproxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: naturecons/shinyproxy
+    ports:
+      - "8080:8080"
     deploy:
       restart_policy:
         condition: on-failure
@@ -12,8 +17,6 @@ services:
       - ./shinyproxy-logs/server:/log
       - ./shinyproxy-logs/container:/container-logs
       - ./application.yml:/opt/shinyproxy/application.yml
-    ports:
-      - "8080:8080"
 
 networks:
   net:

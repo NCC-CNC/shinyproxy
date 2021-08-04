@@ -2,17 +2,84 @@ proxy:
   title: ShinyProxy demo
   port: 8080
   authentication: none
+  container-log-path: /container-logs
   docker:
       internal-networking: true
       container-network: net
   specs:
   - id: 01_hello
-    display-name: Hello Application
-    description: Application which demonstrates the basics of a Shiny app
-    container-cmd: ["R", "-e", "shiny::runExample('01_hello')"]
-    container-image: openanalytics/shinyproxy-demo
+    display-name: Hello Shiny!
+    description: This small Shiny application demonstrates Shiny's automatic UI updates.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('01_hello')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 02_text
+    display-name: Shiny Text
+    description: This example demonstrates output of raw text from R using the renderPrint function in server and the verbatimTextOutput function in ui.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('02_text')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 03_reactivity
+    display-name: Reactivity
+    description: This example demonstrates a core feature of Shiny reactivity.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('03_reactivity')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 04_mpg
+    display-name: Miles Per Gallon
+    description: This example demonstrates usage of global variables and reactive expressions.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('04_mpg')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 05_sliders
+    display-name: Sliders
+    description: This example demonstrates Shiny's versatile sliderInput widget.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('05_sliders')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 06_tabsets
+    display-name: Tabsets
+    description: This example demonstrates the tabsetPanel and tabPanel widgets.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('06_tabsets')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 07_widgets
+    display-name: Widgets
+    description: This example demonstrates some additional widgets included in Shiny, such as helpText and actionButton.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('07_widgets')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 08_html
+    display-name: Custom HTML UI
+    description:  This example shows how to use a custom HTML page www/index.html with Shiny.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('08_html')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 09_upload
+    display-name: File Upload
+    description: This example shows how to upload files using fileInput().
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('09_upload')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 10_download
+    display-name: File Download
+    description: We can add a download button to the UI using downloadButton(), and write the content of the file in downloadHandler() in the server function.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('10_download')"]
+    container-image: rocker/shiny:4.1.0
+    container-network: "${proxy.docker.container-network}"
+  - id: 11_timer
+    display-name: Timer
+    description: In this example, the output currentTime is updated every second, so it shows the current time on a second basis.
+    container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('11_timer')"]
+    container-image: rocker/shiny:4.1.0
     container-network: "${proxy.docker.container-network}"
 
 logging:
+  level:
+    root: WARN
   file:
     name: /log/shinyproxy.log
+
+server:
+  servlet:
+    context-path:  /

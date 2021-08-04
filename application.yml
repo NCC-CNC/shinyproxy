@@ -1,0 +1,18 @@
+proxy:
+  title: ShinyProxy demo
+  port: 8080
+  authentication: none
+  docker:
+      internal-networking: true
+      container-network: net
+  specs:
+  - id: 01_hello
+    display-name: Hello Application
+    description: Application which demonstrates the basics of a Shiny app
+    container-cmd: ["R", "-e", "shiny::runExample('01_hello')"]
+    container-image: openanalytics/shinyproxy-demo
+    container-network: "${proxy.docker.container-network}"
+
+logging:
+  file:
+    name: /log/shinyproxy.log

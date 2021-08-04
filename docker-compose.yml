@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  shinyproxy:
+    image: naturecons/shinyproxy
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./shinyproxy-logs/server:/log
+      - ./shinyproxy-logs/container:/container-logs
+      - ./application.yml:/opt/shinyproxy/application.yml
+    ports:
+      - "8080:8080"
+
+networks:
+  net:
+    name: net

@@ -2,6 +2,7 @@ proxy:
   title: ShinyProxy demo
   port: 8080
   authentication: none
+  template-path: ./templates
   container-log-path: /container-logs
   docker:
       internal-networking: true

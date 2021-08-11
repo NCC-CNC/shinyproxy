@@ -10,7 +10,8 @@ This repository contains files to run [ShinyProxy](https://www.shinyproxy.io/) i
 This repository contains an example web application that can be launched using [ShinyProxy](https://www.shinyproxy.io/) inside a Docker container. Specifically, the example web application hosts a series of example [Shiny web applications](https://shiny.rstudio.com/). To run this example, please use the following system command:
 
 ```
-docker-compose up --build
+docker-compose pull
+docker-compose up -d
 ```
 
 After running this command, you can view the application at [https://localhost:8080](https://localhost:8080). You can also find log files for the ShinyProxy server inside the `shinyproxy-logs/server` directory, and log files for the Shiny web applications inside the `shinyproxy-logs/container` directory.

@@ -1,4 +1,12 @@
 # Docker commands
+## launch local version for development
+## view it at: http://localhost:8080/
+demo:
+	docker-compose up --build
+
+demo-kill:
+	docker-compose down
+
 ## create local image and push to docker
 image:
 	docker build -t naturecons/shinyproxy:latest .

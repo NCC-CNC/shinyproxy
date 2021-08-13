@@ -3,7 +3,7 @@
 [![lifecycle](https://img.shields.io/badge/Lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Docker Status](https://img.shields.io/docker/cloud/build/naturecons/shinyproxy?label=Docker%20build)](https://hub.docker.com/r/naturecons/shinyproxy)
 
-This repository contains files to run [ShinyProxy](https://www.shinyproxy.io/) inside a [Docker container](https://www.docker.com/). It also contains a customized HTML template for the landing page (see `templates/index.html`).
+This repository contains files to run [ShinyProxy](https://www.shinyproxy.io/) inside a [Docker container](https://www.docker.com/). It also contains a customized HTML template for the landing page (see `templates/index.html`) and web application containers (see `templates/app.html`). These templates provide the same functionality as the standard ShinyProxy pages, except that web applications can now have an optional Google Analytics support (see `application.yml` for example).
 
 ## Usage
 

@@ -9,6 +9,7 @@ proxy:
       container-network: net
   specs:
   - id: 01_hello
+    # display-name: Hello Shiny!@@G-1234 # example Google Analytics Id
     display-name: Hello Shiny!
     description: This small Shiny application demonstrates Shiny's automatic UI updates.
     container-cmd: ["R", "-e", "options(shiny.port=3838,shiny.host= '0.0.0.0');shiny::runExample('01_hello')"]

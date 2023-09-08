@@ -2,3 +2,5 @@
 *.log
 *.gz
 .Rproj.user
+
+*.jar

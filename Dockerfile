@@ -4,8 +4,7 @@ RUN mkdir -p /opt/shinyproxy/ && \
     mkdir -p /opt/shinyproxy/templates && \
     mkdir -p /opt/shinyproxy/assets
 
-COPY templates/index.html /opt/shinyproxy/templates/index.html
-COPY templates/app.html /opt/shinyproxy/templates/app.html
+COPY templates-3.0.2 /opt/shinyproxy/templates
 
 WORKDIR /opt/shinyproxy
 

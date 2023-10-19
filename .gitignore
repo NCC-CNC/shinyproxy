@@ -1,3 +1,6 @@
 # ignore log files
 *.log
 *.gz
+.Rproj.user
+
+*.jar

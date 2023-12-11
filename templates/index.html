@@ -1,0 +1,131 @@
+<!--
+
+    ShinyProxy
+
+    Copyright (C) 2016-2023 Open Analytics
+
+    ===========================================================================
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the Apache License as published by
+    The Apache Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    Apache License for more details.
+
+    You should have received a copy of the Apache License
+    along with this program.  If not, see <http://www.apache.org/licenses/>
+
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head lang="en">
+    <title th:text="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" media="screen" th:href="@{${resourcePrefix} + ${bootstrapCss}}"/>
+    <link rel="stylesheet" media="screen" th:href="@{${resourcePrefix} + '/css/default.css'}"/>
+    <script th:src="@{${resourcePrefix} + ${jqueryJs}}"></script>
+    <script th:src="@{${resourcePrefix} + ${bootstrapJs}}"></script>
+    <script th:src="@{${resourcePrefix} + ${handlebars}}"></script>
+    <script th:src="@{${resourcePrefix} + '/js/shiny.app.js' }"></script>
+    <script th:src="@{${resourcePrefix} + '/js/shiny.api.js' }"></script>
+    <script th:src="@{${resourcePrefix} + '/js/shiny.connections.js'}"></script>
+    <script th:src="@{${resourcePrefix} + '/js/shiny.instances.js' }"></script>
+    <script th:src="@{${resourcePrefix} + '/js/shiny.ui.js' }"></script>
+    <script th:src="@{${resourcePrefix} + '/js/shiny.common.js'}"></script>
+    <script th:src="@{${resourcePrefix} + '/handlebars/precompiled.js'}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/index-styles.css}">
+
+    <!-- Google analytics  -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JMKS2DFZVL"></script>
+    <script>
+        // define hashing function
+        // https://helgeklein.com/blog/google-analytics-cookieless-tracking-without-gdpr-consent/
+        const cyrb53 = function(str, seed = 0) {
+            let h1 = 0xdeadbeef ^ seed,
+                h2 = 0x41c6ce57 ^ seed;
+            for (let i = 0, ch; i < str.length; i++) {
+                ch = str.charCodeAt(i);
+                h1 = Math.imul(h1 ^ ch, 2654435761);
+                h2 = Math.imul(h2 ^ ch, 1597334677);
+            }
+            h1 = Math.imul(h1 ^ h1 >>> 16, 2246822507) ^ Math.imul(h2 ^ h2 >>> 13, 3266489909);
+            h2 = Math.imul(h2 ^ h2 >>> 16, 2246822507) ^ Math.imul(h1 ^ h1 >>> 13, 3266489909);
+        };
+
+        // create hashed client identifier
+        // https://helgeklein.com/blog/google-analytics-cookieless-tracking-without-gdpr-consent/
+        let clientData = null;
+        $.ajax({
+        url: "https://api.db-ip.com/v2/free/self",
+        dataType: "json",
+        async: false,
+            success: function(data) {
+                clientData = data;
+            }
+        })
+        let clientIP = clientData.ipAddress;
+        let validityInterval = Math.round (new Date() / 1000 / 3600 / 24 / 4);
+        let clientIDSource = clientIP + ";" + window.location.host + ";" +
+        navigator.userAgent + ";" + navigator.language + ";" + validityInterval;
+        let clientIDHashed = cyrb53(clientIDSource).toString(16);
+
+        // set Google Analytics ID for app
+        let appId = "G-JMKS2DFZVL";
+
+        // setup Google Analytics
+        // see https://webmasters.stackexchange.com/a/117181
+        // see https://medium.com/@marcusasplund/with-gtag-js-note-that-props-are-now-written-in-snake-case-b4afa707a931
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", appId, {
+            "user_id": clientIDHashed,
+            "storage": "none",
+            "store_gac": false,
+            "anonymize_ip": true
+        });
+    </script>
+</head>
+<body>
+<!-- navigation bar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- This is a fragment used to display a single app. -->
+<!-- Modify this in order to change how a single app looks. -->
+<!-- content -->
+  <div class = "flex-container" id="applist">
+    <div class = "flex-item thumbnail" th:each="app: ${apps}">
+      <div class="position-relative">
+        <img th:if="${appLogos.get(app) != null}" th:src="${appLogos.get(app)}" style="width:100%;height:200px;">
+      </div>
+      <div class="caption">
+        <h4 id="thumbnail-label">
+          <span th:utext="${app.displayName == null} ? ${app.id} : ${#strings.arraySplit(app.displayName, '@@')[0]}">
+          </span>
+        </h4>
+        <span class="thumbnail-description smaller" th:if="${app.description != null}" th:utext="${app.description}">
+        </span>
+      </div>
+      <div class="thumbnail-footer">
+        <a class="btn btn-primary btn-lg" th:href="@{/app/}+${app.id}+@{?sp_hide_navbar=true}">Launch</a>
+      </div>
+    </div>
+  </div>
+<!--End of the template.-->
+
+<div th:replace="fragments/modal :: modal"></div>
+
+<script type="text/javascript" th:inline="javascript">
+    $(window).on('load', function () {
+        window.Shiny.common.init([[${contextPath}]], [[${application_name}]], [[${spInstance}]], [[${appMaxInstances}]], [[${myAppsMode}]], [[${pauseSupported}]]);
+        window.Shiny.common.startIndex();
+    });
+</script>
+</body>
+</html>

@@ -6,7 +6,8 @@ RUN mkdir -p /opt/shinyproxy/ && \
     wget "https://shinyproxy.io/downloads/shinyproxy-3.0.2.jar" -O \
     /opt/shinyproxy/shinyproxy.jar
     
-COPY templates-3.0.2 /opt/shinyproxy/templates
+COPY templates /opt/shinyproxy/templates
+COPY assets /opt/shinyproxy/assets
 
 WORKDIR /opt/shinyproxy
 

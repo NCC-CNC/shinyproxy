@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   shinyproxy:
     build:
@@ -17,7 +16,6 @@ services:
       - ./shinyproxy-logs/server:/log
       - ./shinyproxy-logs/container:/container-logs
       - ./application.yml:/opt/shinyproxy/application.yml
-      # - ./shinyproxy-3.0.2.jar:/opt/shinyproxy/shinyproxy.jar
 
 networks:
   net:

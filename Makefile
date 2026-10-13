@@ -1,20 +1,18 @@
-# Docker commands
-## launch local version for development
-## view it at: http://localhost:8080/
-demo:
+demo: ## Launch local version for development (http://localhost:8080/)
 	docker-compose up --build
 
-demo-kill:
+demo-kill: ## Kill local version for development
 	docker-compose down
 
-## create local image and push to docker
-image:
+image: ## Build local image and push to Docker Hub
 	docker build -t naturecons/shinyproxy:latest .
 	docker push naturecons/shinyproxy:latest
 
-## delete all local containers and images
-reset:
+reset: ## Delete all local Docker containers and images
 	docker rm $(docker ps -aq) || \
 	docker rmi -f $(docker images -aq)
 
-.PHONY: image reset
+help: ## List available targets
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: demo demo-kill image reset help
